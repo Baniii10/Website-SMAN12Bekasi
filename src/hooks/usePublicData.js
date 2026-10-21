@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { berita as seedBerita } from "../data/berita";
 import { pengumuman as seedPengumuman } from "../data/pengumuman";
 import { guru as seedGuru } from "../data/guru";
@@ -11,26 +11,53 @@ function getData(key, seed) {
   return raw ? JSON.parse(raw) : seed;
 }
 
-export function useBerita() {
-  const [data, setData] = useState(seedBerita);
-  useEffect(() => { setData(getData("adminBerita", seedBerita)); }, []);
+/**
+ * Generic hook yang:
+ * 1. Baca localStorage saat mount
+ * 2. Baca ulang saat window focus (kembali dari tab admin)
+ * 3. Baca ulang saat storage event (perubahan dari tab lain)
+ */
+function useLocalStorageData(key, seed) {
+  const [data, setData] = useState(seed);
+
+  const refresh = useCallback(() => {
+    setData(getData(key, seed));
+  }, [key, seed]);
+
+  useEffect(() => {
+    // Baca saat pertama kali mount
+    refresh();
+
+    // Baca ulang saat tab aktif kembali (misalnya dari halaman admin)
+    window.addEventListener("focus", refresh);
+
+    // Baca ulang saat ada perubahan localStorage dari tab lain
+    const onStorage = (e) => {
+      if (e.key === key) refresh();
+    };
+    window.addEventListener("storage", onStorage);
+
+    return () => {
+      window.removeEventListener("focus", refresh);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, [key, refresh]);
+
   return data;
+}
+
+export function useBerita() {
+  return useLocalStorageData("adminBerita", seedBerita);
 }
 
 export function usePengumuman() {
-  const [data, setData] = useState(seedPengumuman);
-  useEffect(() => { setData(getData("adminPengumuman", seedPengumuman)); }, []);
-  return data;
+  return useLocalStorageData("adminPengumuman", seedPengumuman);
 }
 
 export function useGuru() {
-  const [data, setData] = useState(seedGuru);
-  useEffect(() => { setData(getData("adminGuru", seedGuru)); }, []);
-  return data;
+  return useLocalStorageData("adminGuru", seedGuru);
 }
 
 export function useEkskul() {
-  const [data, setData] = useState(seedEkskul);
-  useEffect(() => { setData(getData("adminEkskul", seedEkskul)); }, []);
-  return data;
+  return useLocalStorageData("adminEkskul", seedEkskul);
 }

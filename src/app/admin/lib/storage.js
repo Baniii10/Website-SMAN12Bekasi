@@ -12,6 +12,8 @@ function getOrInit(key, seed) {
 
 function save(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
+  // Dispatch storage event manually so same-tab listeners also get notified
+  window.dispatchEvent(new StorageEvent("storage", { key, newValue: JSON.stringify(data) }));
 }
 
 // ── Berita ──────────────────────────────
