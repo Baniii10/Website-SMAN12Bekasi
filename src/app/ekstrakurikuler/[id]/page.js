@@ -1,34 +1,19 @@
+"use client";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ekstrakurikuler } from "../../../data/ekskul";
+import { use } from "react";
+import { useEkskul } from "../../../hooks/usePublicData";
 
-export function generateStaticParams() {
-  return ekstrakurikuler.map((item) => ({
-    id: item.id,
-  }));
-}
-
-export async function generateMetadata({ params }) {
-  const resolvedParams = await params;
-  const id = resolvedParams.id;
-  const ekskul = ekstrakurikuler.find((item) => item.id === id);
-  
-  if (!ekskul) return { title: "Tidak Ditemukan" };
-  
-  return {
-    title: `${ekskul.name} | Ekstrakurikuler SMAN 12 Bekasi`,
-    description: ekskul.description,
-  };
-}
-
-export default async function DetailEkskulPage({ params }) {
-  const resolvedParams = await params;
-  const id = resolvedParams.id;
+export default function DetailEkskulPage({ params }) {
+  const { id } = use(params);
+  const ekstrakurikuler = useEkskul();
   const ekskul = ekstrakurikuler.find((item) => item.id === id);
 
-  if (!ekskul) {
+  // While data is loading (seed has items, so this only fires if truly not found)
+  if (ekstrakurikuler.length > 0 && !ekskul) {
     notFound();
   }
+  if (!ekskul) return null;
 
   return (
     <div className="bg-gray-50 min-h-screen py-10 pb-20">

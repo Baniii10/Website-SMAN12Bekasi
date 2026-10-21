@@ -1,12 +1,10 @@
+"use client";
 import Link from "next/link";
-import { ekstrakurikuler } from "../../data/ekskul";
-
-export const metadata = {
-  title: "Ekstrakurikuler | SMA Negeri 12 Bekasi",
-  description: "Daftar kegiatan ekstrakurikuler yang tersedia di SMA Negeri 12 Bekasi.",
-};
+import { useEkskul } from "../../hooks/usePublicData";
 
 export default function EkstrakurikulerPage() {
+  const ekstrakurikuler = useEkskul();
+
   return (
     <div className="bg-gray-50 min-h-screen pb-20">
       {/* Header */}

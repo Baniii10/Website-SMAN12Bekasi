@@ -1,15 +1,12 @@
+"use client";
 import Link from "next/link";
-import { pengumuman } from "../../data/pengumuman";
-
-export const metadata = {
-  title: "Pengumuman | SMA Negeri 12 Bekasi",
-  description: "Daftar pengumuman resmi SMA Negeri 12 Kota Bekasi.",
-};
+import { usePengumuman } from "../../hooks/usePublicData";
 
 export default function PengumumanPage() {
+  const pengumuman = usePengumuman();
+
   return (
     <div className="bg-gray-50 min-h-screen pb-20">
-      {/* Header */}
       <div className="bg-navy py-12 mb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <nav className="text-sm text-blue-200 mb-4 font-medium flex justify-center space-x-2">
@@ -33,14 +30,13 @@ export default function PengumumanPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                 </svg>
                 <div className="flex-grow">
-                  <p className="text-blue-primary font-semibold uppercase text-sm group-hover:text-blue-800 transition-colors leading-snug">
-                    {item.judul}
-                  </p>
+                  <p className="text-blue-primary font-semibold uppercase text-sm group-hover:text-blue-800 transition-colors leading-snug">{item.judul}</p>
                   <p className="text-xs text-gray-400 mt-1">{item.tanggal}</p>
                 </div>
               </div>
             </Link>
           ))}
+          {pengumuman.length === 0 && <p className="text-center text-gray-400 py-10">Belum ada pengumuman.</p>}
         </div>
       </div>
     </div>

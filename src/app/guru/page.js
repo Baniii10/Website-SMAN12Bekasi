@@ -1,13 +1,11 @@
+"use client";
 import Link from "next/link";
 import SectionHeading from "../../components/SectionHeading";
-import { guru } from "../../data/guru";
-
-export const metadata = {
-  title: "Tenaga Pendidik & Kependidikan | SMA Negeri 12 Bekasi",
-  description: "Profil guru dan tenaga kependidikan yang berdedikasi di SMA Negeri 12 Bekasi.",
-};
+import { useGuru } from "../../hooks/usePublicData";
 
 export default function GuruPage() {
+  const guru = useGuru();
+
   return (
     <div className="bg-gray-50 min-h-screen pb-20">
       {/* Header */}
@@ -29,7 +27,7 @@ export default function GuruPage() {
             <span>/</span>
             <span className="text-gold">Profil Guru</span>
           </nav>
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4">Tenaga Pendidik & Kependidikan</h1>
+          <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4">Tenaga Pendidik &amp; Kependidikan</h1>
           <p className="text-blue-100 max-w-2xl mx-auto text-lg">
             Mengenal lebih dekat para pahlawan tanpa tanda jasa yang berdedikasi tinggi membimbing siswa-siswi SMA Negeri 12 Bekasi.
           </p>

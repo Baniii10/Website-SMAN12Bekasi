@@ -1,13 +1,17 @@
+"use client";
 import Link from "next/link";
 import HeroSection from "../components/HeroSection";
 import SectionHeading from "../components/SectionHeading";
 import SchoolStats from "../components/SchoolStats";
 import NewsCard from "../components/NewsCard";
 import MarsPlayer from "../components/MarsPlayer";
-import { berita } from "../data/berita";
+import { useBerita, usePengumuman } from "../hooks/usePublicData";
 
 export default function Home() {
+  const berita = useBerita();
+  const pengumuman = usePengumuman();
   const latestNews = berita.slice(0, 3);
+  const latestPengumuman = pengumuman.slice(0, 10);
 
   return (
     <div>
@@ -150,19 +154,8 @@ export default function Home() {
             <h2 className="text-2xl font-extrabold text-navy">Pengumuman</h2>
           </div>
           <div className="border-t border-gray-200">
-            {[
-              { id: 1, judul: "Informasi Daftar Ulang Tahap 2 Tahun Ajaran 2026/2027" },
-              { id: 2, judul: "Informasi Pra MPLS Tahun Pelajaran 2026/2027" },
-              { id: 3, judul: "Informasi Daftar Ulang Tahap 1 Tahun Ajaran 2026/2027" },
-              { id: 4, judul: "Informasi Pra MPLS Tahun Pelajaran 2025-2026" },
-              { id: 5, judul: "Informasi Daftar Ulang Tahap 2 dan PAPS" },
-              { id: 6, judul: "Informasi Daftar Ulang SPMB Tahap 1 Tahun Pelajaran 2025-2026" },
-              { id: 7, judul: "Informasi Kelulusan Siswa Tahun Pelajaran 2024-2025" },
-              { id: 8, judul: "Informasi Pra-Masa Pengenalan Lingkungan Sekolah (MPLS) 2024" },
-              { id: 9, judul: "Daftar Ulang Kelas XI & XII" },
-              { id: 10, judul: "Informasi Daftar Ulang PPDB Tahap 2 TP. 2024-2025" },
-            ].map((item, i) => (
-              <Link key={i} href={`/pengumuman/${item.id}`}>
+            {latestPengumuman.map((item, i) => (
+              <Link key={item.id ?? i} href={`/pengumuman/${item.id}`}>
                 <div className="flex items-center gap-3 py-3 border-b border-gray-100 group cursor-pointer hover:bg-gray-50 px-2 rounded transition-colors">
                   <svg className="w-4 h-4 text-blue-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
@@ -173,6 +166,9 @@ export default function Home() {
                 </div>
               </Link>
             ))}
+            {latestPengumuman.length === 0 && (
+              <p className="text-center text-gray-400 py-6 text-sm">Belum ada pengumuman.</p>
+            )}
           </div>
         </div>
       </section>
