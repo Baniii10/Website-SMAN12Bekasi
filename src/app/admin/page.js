@@ -1,16 +1,7 @@
-"use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
+// Server component: langsung redirect ke /admin/login
+// Pengecekan auth dilakukan di dalam halaman login & dashboard masing-masing
 export default function AdminIndex() {
-  const router = useRouter();
-  useEffect(() => {
-    const auth = localStorage.getItem("adminAuth");
-    if (auth === "true") {
-      router.replace("/admin/dashboard");
-    } else {
-      router.replace("/admin/login");
-    }
-  }, [router]);
-  return null;
+  redirect("/admin/login");
 }
