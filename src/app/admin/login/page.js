@@ -2,8 +2,14 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "sman12bekasi";
+const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USER || "admin";
+const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || "sman12bekasi";
+
+// Warn if env vars are missing (only in development)
+if (process.env.NODE_ENV === "development") {
+  if (!process.env.NEXT_PUBLIC_ADMIN_USER) console.warn("NEXT_PUBLIC_ADMIN_USER is not set in .env.local, using default 'admin'.");
+  if (!process.env.NEXT_PUBLIC_ADMIN_PASS) console.warn("NEXT_PUBLIC_ADMIN_PASS is not set in .env.local, using default password.");
+}
 
 export default function AdminLogin() {
   const router = useRouter();
