@@ -1,11 +1,19 @@
 "use client";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { use } from "react";
+import { Suspense, use } from "react";
 import NewsCard from "../../../components/NewsCard";
 import { useBerita } from "../../../hooks/usePublicData";
 
 export default function DetailBeritaPage({ params }) {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 py-10 text-center">Memuat berita...</div>}>
+      <DetailBeritaContent params={params} />
+    </Suspense>
+  );
+}
+
+function DetailBeritaContent({ params }) {
   const { id } = use(params);
   const berita = useBerita();
   const newsItem = berita.find((item) => item.id.toString() === id || item.slug === id);

@@ -1,10 +1,18 @@
 "use client";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { use } from "react";
+import { Suspense, use } from "react";
 import { useEkskul } from "../../../hooks/usePublicData";
 
 export default function DetailEkskulPage({ params }) {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 py-10 text-center">Memuat ekstrakurikuler...</div>}>
+      <DetailEkskulContent params={params} />
+    </Suspense>
+  );
+}
+
+function DetailEkskulContent({ params }) {
   const { id } = use(params);
   const ekstrakurikuler = useEkskul();
   const ekskul = ekstrakurikuler.find((item) => item.id === id);

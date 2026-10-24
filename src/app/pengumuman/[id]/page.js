@@ -1,10 +1,18 @@
 "use client";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { use } from "react";
+import { Suspense, use } from "react";
 import { usePengumuman } from "../../../hooks/usePublicData";
 
 export default function DetailPengumumanPage({ params }) {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 py-10 text-center">Memuat pengumuman...</div>}>
+      <DetailPengumumanContent params={params} />
+    </Suspense>
+  );
+}
+
+function DetailPengumumanContent({ params }) {
   const { id } = use(params);
   const pengumuman = usePengumuman();
   const item = pengumuman.find((p) => p.id === Number(id));

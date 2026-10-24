@@ -2,6 +2,7 @@
 const nextConfig = {
   /* config options here */
   experimental: {
+    agentUpgrade: "security",
     agentFeedback: true,
   },
   cacheComponents: true,
